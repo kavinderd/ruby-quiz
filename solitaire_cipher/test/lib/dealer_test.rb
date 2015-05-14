@@ -29,4 +29,23 @@ class DealerTest < Minitest::Test
     assert_equal("B", @deck[0])
   end
 
+  def test_count_cut
+    @deck = Dealer.move_a(@deck)
+    @deck = Dealer.move_b(@deck)
+    @deck = Dealer.triple_cut(@deck)
+    @deck = Dealer.count_cut(@deck)
+    assert_equal(1, @deck[-1])
+    assert_equal("B", @deck[-2])
+    assert_equal(2, @deck[0])
+  end
+
+  def test_keystream_letter
+    @deck = Dealer.move_a(@deck)
+    @deck = Dealer.move_b(@deck)
+    @deck = Dealer.triple_cut(@deck)
+    @deck = Dealer.count_cut(@deck)
+    letter = Dealer.keystream_letter(@deck)
+    assert_equal("D", letter)
+  end
+
 end

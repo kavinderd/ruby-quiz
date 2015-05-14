@@ -26,6 +26,24 @@ class Dealer
     deck = deck[higher_joker..lower_joker] + deck[0...higher_joker]
   end
 
+  def self.count_cut(deck)
+    bottom_val = deck[-1]
+    removed = []
+    bottom_val.times do
+      removed << deck.shift
+    end
+    removed << bottom_val
+    deck[-1..-1] = removed
+    deck
+  end
+
+  def self.keystream_letter(deck)
+    return if is_joker?(deck[0])
+    value = deck[deck[0]] 
+    value -= 26 if value > 26  
+    (value + 64).chr
+  end
+
   def self.is_joker?(value)
     value == "A" || value == "B"
   end
