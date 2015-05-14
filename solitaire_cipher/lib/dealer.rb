@@ -3,6 +3,7 @@ class Dealer
   def self.move_a(deck)
     index = deck.find_index("A")
     move_down(index, deck)
+    deck
   end
 
   def self.move_b(deck)
@@ -10,6 +11,23 @@ class Dealer
       index = deck.find_index("B")
       move_down(index, deck)
     end
+    deck
+  end
+
+  def self.triple_cut(deck)
+    higher_joker = 0
+    until is_joker?(deck[higher_joker])
+      higher_joker += 1
+    end
+    lower_joker = deck.count - 1
+    until is_joker?(deck[lower_joker])
+      lower_joker -= 1
+    end
+    deck = deck[higher_joker..lower_joker] + deck[0...higher_joker]
+  end
+
+  def self.is_joker?(value)
+    value == "A" || value == "B"
   end
 
   def self.move_down(index, deck)

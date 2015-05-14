@@ -9,16 +9,24 @@ class DealerTest < Minitest::Test
   end
   
   def test_move_a_joker
-    Dealer.move_a(@deck)
+    @deck = Dealer.move_a(@deck)
     assert_equal("A", @deck[-1])
-    Dealer.move_a(@deck)
+    @deck = Dealer.move_a(@deck)
     assert_equal("A", @deck[1])
   end
 
   def test_move_b_joker
-    Dealer.move_a(@deck)
-    Dealer.move_b(@deck)
+    @deck = Dealer.move_a(@deck)
+    @deck = Dealer.move_b(@deck)
     assert_equal("B", @deck[1])
+  end
+
+  def test_triple_cut
+    @deck = Dealer.move_a(@deck)
+    @deck = Dealer.move_b(@deck)
+    @deck = Dealer.triple_cut(@deck)
+    assert_equal(1, @deck[-1])
+    assert_equal("B", @deck[0])
   end
 
 end
