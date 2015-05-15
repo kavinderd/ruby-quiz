@@ -10,12 +10,34 @@ class Cipher
 
   def encrypt(string)
     unencrypted_string = strip_invalid_characters(string) 
-    keystream = generate_keystream(length)
     unencrypted_group = group_into_fives(unencrypted_string)
-    unencrypted_string = convert_to_num(string)
+
+    keystream = generate_keystream(unencrypted_group.flatten.count)
+    keystream_group = group_into_fives(keystream)
+
+    unencrypted_nums = convert_to_nums(unencrypted_group)
+    keystream_nums = convert_to_nums(keystream_group)
+
+    added_array = add_groups(unencrypted_nums.flatten, keystream_nums.flatten)
+    converted_array = convert_to_chars(added_array)
+    converted_array.join("")
   end
 
   private
+
+  def convert_to_chars(array)
+    array.map { |num| (num + 64).chr }
+  end
+  
+  def add_groups(group1, group2)
+    result = []
+    group1.each_with_index do |num, index|
+      value = num + group2[index]
+      value -= 26 if value > 26
+      result << value
+    end
+    result
+  end
 
   def group_into_fives(string)
     array = string.chars.each_slice(5).to_a
@@ -25,7 +47,12 @@ class Cipher
     array
   end
 
-  def convert_to_num(string)
+  def convert_to_nums(array_groups)
+    result = []
+    array_groups.each do |array|
+      result << array.map { |item| item.ord - 64 }
+    end
+    result
   end
 
   def strip_invalid_characters(string)

@@ -8,6 +8,12 @@ class CipherTest < Minitest::Test
     @cipher = Cipher.new
   end
 
+  def test_encryption
+    string = "Code in Ruby, live longer!"
+    encrypted = @cipher.encrypt(string)
+    assert_equal("GWRNMMLZNFXIBYEAOETT", encrypted)
+  end
+
   # Private Method Tests
 
   def test_strip_invalid_chars
@@ -27,4 +33,27 @@ class CipherTest < Minitest::Test
     assert_equal(3, groups.count)
     assert_equal("X", groups.last.last)
   end
+
+  def test_convert_to_nums
+    group = [["A", "B", "C", "D", "E"]]
+    convert = @cipher.send("convert_to_nums", group)
+    assert_equal(1, convert.first.first)
+    assert_equal(5, convert.last.last)
+  end
+
+  def test_adding_groups
+    group1 = [1,5,3,18, 20]
+    group2 = [5,8,25, 19,7]
+    added = @cipher.send("add_groups", group1, group2)
+    assert_equal(6,added.first)
+    assert_equal(1, added.last)
+  end
+
+  def test_convert_to_chars
+    array = [1,6,25, 13, 19]
+    convert = @cipher.send("convert_to_chars", array)
+    assert_equal("A", convert.first)
+    assert_equal("S", convert.last)
+  end
+
 end
