@@ -23,7 +23,8 @@ class Dealer
     until is_joker?(deck[lower_joker])
       lower_joker -= 1
     end
-    deck = deck[higher_joker..lower_joker] + deck[0...higher_joker]
+    deck = deck[higher_joker..lower_joker] + deck[lower_joker..-1] + deck[0...higher_joker]
+    deck
   end
 
   def self.count_cut(deck)
@@ -38,7 +39,7 @@ class Dealer
   end
 
   def self.keystream_letter(deck)
-    return if is_joker?(deck[0])
+    return if is_joker?(deck[0]) || is_joker?(deck[deck[0]])
     value = deck[deck[0]] 
     value -= 26 if value > 26  
     (value + 64).chr
