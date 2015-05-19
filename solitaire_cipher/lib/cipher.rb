@@ -23,7 +23,23 @@ class Cipher
     converted_array.join("")
   end
 
+  def decrypt(string)
+    encrypted_string = string
+    encrypted_group = group_into_fives(encrypted_string)
+
+    keystream = generate_keystream(string.length)
+    keystream_group = group_into_fives(keystream)
+
+    encrypted_nums = convert_to_nums(encrypted_group)
+    keystream_nums = convert_to_nums(keystream_group)
+
+    diff_array = subtract_groups(encrypted_nums.flatten, keystream_nums.flatten)
+    converted_array = convert_to_chars(diff_array)
+    converted_array.join("")
+  end
+
   private
+
 
   def convert_to_chars(array)
     array.map { |num| (num + 64).chr }
@@ -34,6 +50,16 @@ class Cipher
     group1.each_with_index do |num, index|
       value = num + group2[index]
       value -= 26 if value > 26
+      result << value
+    end
+    result
+  end
+
+  def subtract_groups(group1, group2)
+    result = []
+    group1.each_with_index do |num, index|
+      value = num - group2[index]
+      value += 26 if num <= group2[index]
       result << value
     end
     result

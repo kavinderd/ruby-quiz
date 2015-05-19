@@ -14,6 +14,12 @@ class CipherTest < Minitest::Test
     assert_equal("GWRNMMLZNFXIBYEAOETT", encrypted)
   end
 
+  def test_decryption
+    string = "GWRNMMLZNFXIBYEAOETT"
+    decrypted = @cipher.decrypt(string)
+    assert_equal("CODEINRUBYLIVELONGER", decrypted)
+  end
+
   # Private Method Tests
 
   def test_strip_invalid_chars
