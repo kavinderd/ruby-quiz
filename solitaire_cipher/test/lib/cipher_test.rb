@@ -11,13 +11,13 @@ class CipherTest < Minitest::Test
   def test_encryption
     string = "Code in Ruby, live longer!"
     encrypted = @cipher.encrypt(string)
-    assert_equal("GWRNMMLZNFXIBYEAOETT", encrypted)
+    assert_equal("GLNCQMJAFFFVOMBJIYCB", encrypted)
   end
 
   def test_decryption
-    string = "GWRNMMLZNFXIBYEAOETT"
+    string = "CLEPKHHNIYCFPWHFDFEH"
     decrypted = @cipher.decrypt(string)
-    assert_equal("CODEINRUBYLIVELONGER", decrypted)
+    assert_equal("YOURCIPHERISWORKINGX", decrypted)
   end
 
   # Private Method Tests

@@ -40,12 +40,17 @@ class DealerTest < Minitest::Test
   end
 
   def test_keystream_letter
-    @deck = Dealer.move_a(@deck)
-    @deck = Dealer.move_b(@deck)
-    @deck = Dealer.triple_cut(@deck)
-    @deck = Dealer.count_cut(@deck)
-    letter = Dealer.keystream_letter(@deck)
-    assert_equal("D", letter)
+    letters = []
+    until letters.count == 6
+      @deck = Dealer.move_a(@deck)
+      @deck = Dealer.move_b(@deck)
+      @deck = Dealer.triple_cut(@deck)
+      @deck = Dealer.count_cut(@deck)
+      letter = Dealer.keystream_letter(@deck)
+      letters << letter if letter
+    end
+    assert_equal("D", letters[0])
+    assert_equal("Y", letters[-1])
   end
 
 end

@@ -15,32 +15,25 @@ class Dealer
   end
 
   def self.triple_cut(deck)
-    higher_joker = 0
-    until is_joker?(deck[higher_joker])
-      higher_joker += 1
-    end
-    lower_joker = deck.count - 1
-    until is_joker?(deck[lower_joker])
-      lower_joker -= 1
-    end
-    deck = deck[higher_joker..lower_joker] + deck[lower_joker..-1] + deck[0...higher_joker]
+    b = deck.index("B")
+    a = deck.index("A")
+
+    a,b = b,a if a > b
+    deck = deck[(b+1)..-1] + deck[a..b] + deck[0...a]
     deck
   end
 
   def self.count_cut(deck)
-    bottom_val = deck[-1]
-    removed = []
-    bottom_val.times do
-      removed << deck.shift
-    end
-    removed << bottom_val
-    deck[-1..-1] = removed
+    last = deck[-1].to_i
+    deck[-1..-1] = [deck[0...last], deck[-1]].flatten
+    last.times { deck.shift }
     deck
   end
 
   def self.keystream_letter(deck)
-    return if is_joker?(deck[0]) || is_joker?(deck[deck[0]])
-    value = deck[deck[0]] 
+    first= is_joker?(deck[0]) ? 53 : deck[0]
+    value = deck[first]
+    return if is_joker?(value)
     value -= 26 if value > 26  
     (value + 64).chr
   end
@@ -52,10 +45,8 @@ class Dealer
   def self.move_down(index, deck)
     if index == deck.count - 1
       # End of Deck
-      card = deck.pop
-      top = deck.shift
-      deck.unshift card
-      deck.unshift top
+      deck[1..1] = deck[index], deck[1]
+      deck.pop
     else
       deck[index], deck[index+1] = deck[index + 1], deck[index]
     end
